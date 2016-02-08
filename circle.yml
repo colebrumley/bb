@@ -11,7 +11,8 @@ dependencies:
 
 test:
   override:
-    - make ci # hold on to your butts
+    - make ci:
+        timeout: 10800
 
 deployment:
   master:
