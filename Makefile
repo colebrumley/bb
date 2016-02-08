@@ -5,15 +5,21 @@ builder:
 	docker build -t $(BUILDIMG) -f base.Dockerfile .
 
 rootfs:
-	docker run -it --rm -v $(ROOT_DIR):/out --env-file=config/build.conf $(TMPFS_BUILD) $(BUILDIMG)
+	docker run -it --rm \
+	-v $(ROOT_DIR):/out \
+	-e DISTIMG=$(DISTIMG) \
+	-e BUILDROOT_VERSION=$(BUILDROOT_VERSION) \
+	-e LC_ALL=$(LC_ALL) \
+	$(TMPFS_BUILD) $(BUILDIMG)
 
 image:
 	docker build -t $(DISTIMG) -f img.Dockerfile .
 
 clean:
-	echo $(ROOT_DIR)
 	docker rmi $(BUILDIMG) || true
 	docker rmi $(DISTIMG) || true
 	rm -f rootfs.tar.gz || true
 
 all: builder rootfs image
+
+ci: clean all

@@ -1,0 +1,23 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - sudo apt-get -qq update
+    - sudo apt-get -qqy install make
+    - mv config/ci.conf config/build.conf
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_REPO_USER -p $DOCKER_PASS
+
+tests:
+  override:
+    - make ci # hold on to your butts
+
+deployment:
+  branch: master
+  commands:
+    - docker tag ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:master ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:latest
+    - docker push -a ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}
+  branch: /^((?!master).)*$/ # not master
+  commands:
+    - docker push ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BRANCH}
