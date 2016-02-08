@@ -5,7 +5,7 @@ builder:
 	docker build -t $(BUILDIMG) -f base.Dockerfile .
 
 rootfs:
-	docker run -it --rm \
+	docker run -it \
 	-v $(ROOT_DIR):/out \
 	-e DISTIMG=$(DISTIMG) \
 	-e BUILDROOT_VERSION=$(BUILDROOT_VERSION) \
