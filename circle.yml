@@ -19,7 +19,8 @@ deployment:
     branch: master
     commands:
       - docker tag ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:master ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:latest
-      - docker push ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:master ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:latest
+      - docker push ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:master
+      - docker push ${DOCKER_REPO_USER}/${CIRCLE_PROJECT_REPONAME}:latest
   alt:
     branch: /^((?!master).)*$/ # not master
     commands:
