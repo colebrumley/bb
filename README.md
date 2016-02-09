@@ -16,11 +16,6 @@ This is a quasi-minimal BusyBox rootfs with some basic utilities added for flexi
 ## Build + Customize
 **To build:** To build the default image, run `make all`. You can build individual components with `make builder|rootfs|image`. To speed things up, you can use Docker v1.10's tmpfs mounts to store the buildroot directories (enable in `config/build.conf`). You'll need lots of RAM though, the tmpfs mount will need about 4GB depending on your selections.
 
-Since this is Buildroot, the build will take approximately one eternity. I've taken to spinning up a fairly large DigitalOcean instance, mounting `/var/lib/docker` as tmpfs, running the build, and removing the instance. This will make the entire build run from a RAM disk, so I/O bottlenecks should be minimized. For example:
-
-```bash
-docker-machine create -d digitalocean --digitalocean-image ubuntu-15-10-x64 --digitalocean-size 16gb bb
-docker-machine ssh bb "systemctl stop docker; mount -t tmpfs -o rw,size=10G,mode=700 tmpfs /var/lib/docker; systemctl start docker"
-```
+Since this is Buildroot, the build will take approximately one eternity.
 
 **To customize:** Put your custom Buildroot and BusyBox configs in the `config/` dir (replacing the existing ones). Modify `config/build.conf` to change the Buildroot version, tmpfs settings and resulting image names. For anything bigger please consider submitting a PR - sharing is caring.
